@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
 interface AddCardProps {
-  listId: string;
-  onCreate: (listId: string, title: string) => Promise<void>;
+  listId: number;
+  onCreate: (listId: number, title: string) => Promise<void>;
 }
 export function AddCard({ listId, onCreate }: AddCardProps) {
   const [showInput, setShowInput] = useState(false);

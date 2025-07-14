@@ -14,7 +14,7 @@ export const listRepository = {
     const result = await api.put('/lists', { lists });
     return result.data.map((list: List) => new List(list));
   },
-  async delete(id: string): Promise<boolean> {
+  async delete(id: number): Promise<boolean> {
     await api.delete(`/lists/${id}`);
     return true;
   },

@@ -1,11 +1,11 @@
 export class Card {
-  id!: string;
+  id!: number;
   title!: string;
   position!: number;
   description!: string;
   dueDate?: string;
   completed!: boolean;
-  listId!: string;
+  listId!: number;
 
   constructor(data: Card) {
     Object.assign(this, data);

@@ -7,8 +7,8 @@ import { cardsAtom } from '../../../modules/cards/card.state';
 
 interface SortableListProps {
   list: List;
-  onDelete: (id: string) => void;
-  onCreateCard: (listId: string, title: string) => Promise<void>;
+  onDelete: (id: number) => void;
+  onCreateCard: (listId: number, title: string) => Promise<void>;
 }
 export function SortableList({
   list,
@@ -21,7 +21,7 @@ export function SortableList({
     .sort((a, b) => a.position - b.position);
 
   return (
-    <Draggable draggableId={list.id} index={list.position}>
+    <Draggable draggableId={`list-${list.id}`} index={list.position}>
       {(provided, snapshot) => (
         <div
           ref={provided.innerRef}
@@ -54,7 +54,7 @@ export function SortableList({
                 </svg>
               </button>
             </div>
-            <Droppable droppableId={list.id} type="card">
+            <Droppable droppableId={`list-${list.id}`} type="card">
               {(provided) => (
                 <div
                   ref={provided.innerRef}

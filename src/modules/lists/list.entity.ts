@@ -1,5 +1,5 @@
 export class List {
-  id!: string;
+  id!: number;
   title!: string;
   position!: number;
 

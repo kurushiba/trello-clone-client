@@ -18,7 +18,7 @@ export default function SortableBoard() {
   const [cards, setCards] = useAtom(cardsAtom);
   const sortedLists = [...lists].sort((a, b) => a.position - b.position);
 
-  const createCard = async (listId: string, title: string) => {
+  const createCard = async (listId: number, title: string) => {
     const newCard = await cardRepository.create(listId, title);
     setCards((prevCards) => [...prevCards, newCard]);
   };
@@ -28,7 +28,7 @@ export default function SortableBoard() {
     setLists((prevLists) => [...prevLists, newList]);
   };
 
-  const deleteList = async (listId: string) => {
+  const deleteList = async (listId: number) => {
     const confirmMessage =
       'リストを削除しますか？このリスト内のカードも全て削除されます';
     try {
@@ -52,12 +52,13 @@ export default function SortableBoard() {
     }
 
     if (type == 'card') {
-      await handleCardMove(draggableId, source, destination);
+      const cardId = parseInt(draggableId.replace('card-', ''));
+      await handleCardMove(cardId, source, destination);
     }
   };
 
   const handleCardMove = async (
-    cardId: string,
+    cardId: number,
     source: DraggableLocation,
     destination: DraggableLocation
   ) => {
@@ -82,17 +83,21 @@ export default function SortableBoard() {
     destination: DraggableLocation,
     card: Card
   ) => {
+    const sourceListId = parseInt(source.droppableId.replace('list-', ''));
+    const destinationListId = parseInt(
+      destination.droppableId.replace('list-', '')
+    );
     const sourceListCards = cards
-      .filter((c) => c.listId == source.droppableId && c.id !== card.id)
+      .filter((c) => c.listId == sourceListId && c.id !== card.id)
       .sort((a, b) => a.position - b.position);
     const updatedCards = updateCardsPosition(cards, sourceListCards);
 
     const destinationListCards = updatedCards
-      .filter((c) => c.listId == destination.droppableId)
+      .filter((c) => c.listId == destinationListId)
       .sort((a, b) => a.position - b.position);
     destinationListCards.splice(destination.index, 0, {
       ...card,
-      listId: destination.droppableId,
+      listId: destinationListId,
     });
 
     return updateCardsPosition(updatedCards, destinationListCards);
@@ -102,8 +107,9 @@ export default function SortableBoard() {
     source: DraggableLocation,
     destination: DraggableLocation
   ) => {
+    const sourceListId = parseInt(source.droppableId.replace('list-', ''));
     const listCards = cards
-      .filter((card) => card.listId == source.droppableId)
+      .filter((card) => card.listId == sourceListId)
       .sort((a, b) => a.position - b.position);
     const [removed] = listCards.splice(source.index, 1);
     listCards.splice(destination.index, 0, removed);

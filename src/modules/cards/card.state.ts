@@ -3,7 +3,7 @@ import { Card } from './card.entity';
 
 export const cardsAtom = atom<Card[]>([]);
 
-export const selectedCardIdAtom = atom<string | null>(null);
+export const selectedCardIdAtom = atom<number | null>(null);
 
 export const selectedCardAtom = atom((get) => {
   const selectedCardId = get(selectedCardIdAtom);

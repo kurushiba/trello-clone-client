@@ -11,7 +11,7 @@ export function SortableCard({ card }: SortableCardProps) {
   const setSelectedCardId = useSetAtom(selectedCardIdAtom);
 
   return (
-    <Draggable draggableId={card.id} index={card.position}>
+    <Draggable draggableId={`card-${card.id}`} index={card.position}>
       {(provided, snapshot) => (
         <div
           ref={provided.innerRef}
